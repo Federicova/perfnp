@@ -16,10 +16,7 @@ function AppveyorInstall {
 
 function AppveyorConfigure {
   if (DoCoverage) {
-    Invoke-Expression-Safely "cmake '-Hmisc\appveyor' '-Bbuild\misc' '-A$env:PLATFORM'"
-    Invoke-Expression-Safely "cmake '--build' 'build\misc' '--' '/verbosity:minimal'"
-    Invoke-Expression-Safely "cmake '-H.' '-Bbuild\main' '-A$env:PLATFORM' '-DMEMORYCHECK_COMMAND=build\misc\Debug\CoverageHelper.exe' '-DMEMORYCHECK_COMMAND_OPTIONS=--sep--' '-DMEMORYCHECK_TYPE=Valgrind'"
-
+    Invoke-Expression-Safely "cmake '-H.' '-Bbuild\main' '-A$env:PLATFORM' '-DMEMORYCHECK_COMMAND=misc\appveyor\coverage.bat' '-DMEMORYCHECK_COMMAND_OPTIONS=--@' '-DMEMORYCHECK_TYPE=Valgrind'"
   } else {
     Invoke-Expression-Safely "cmake '-H.' '-Bbuild\main' '-A$env:PLATFORM'"
   }
@@ -87,11 +84,8 @@ function installOpenCppCoverage {
 # Merge all 'cov-report*.bin' coverage reports into the 'cobertura.xml' file
 function MergeCoverage {
   Set-Variable -Name command -Value "OpenCppCoverage --quiet --export_type=cobertura:cobertura.xml"
-  foreach ($file in Get-ChildItem -File -Filter 'cov-report*.bin') {
+  foreach ($file in Get-ChildItem -File -Filter 'MemoryChecker.*.log') {
       Set-Variable -Name command -Value "$command --input_coverage $file"
   }
   Invoke-Expression-Safely "$command"
-
-  # Workaround https://github.com/OpenCppCoverage/OpenCppCoverage/issues/46
-  (Get-Content cobertura.xml) -replace ' filename="projects\\perfnp[-a-z]*\\', ' filename="' | Set-Content cobertura.xml
 }
