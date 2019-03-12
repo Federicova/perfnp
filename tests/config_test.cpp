@@ -9,12 +9,26 @@
 
 using namespace perfnp;
 
-TEST_CASE("Config read + write")
+TEST_CASE("Config::timeout")
 {
-    nlohmann::json j = R"({
-        "config":10
-    })"_json;
+    SECTION("standard operation")
+    {
+        Config c(R"({
+            "config" : 10
+        })"_json);
 
-    perfnp::Config conf(j);
-    REQUIRE(conf.timeout() == 10);
+        REQUIRE(c.timeout() == 10);
+    }
+
+    SECTION("field is missing")
+    {
+        Config c(R"({})"_json);
+        REQUIRE_THROWS_AS(c.timeout(), std::runtime_error);
+    }
+
+    SECTION("field has invalid type")
+    {
+        Config c(R"({"config":"hello"})"_json);
+        REQUIRE_THROWS_AS(c.timeout(), std::runtime_error);
+    }
 }
