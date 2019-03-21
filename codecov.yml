@@ -11,6 +11,8 @@ coverage:
         target: 80%
 
   ignore:
+    - "cli/**"
+    - "lib/**"
     - "tests/**"
 
 
@@ -18,4 +20,7 @@ codecov:
   branch: master
 
 comment:
-  layout: "diff"
+  layout: "header, diff"
+
+fixes:
+  - "projects/::" # fix AppVeyor paths
