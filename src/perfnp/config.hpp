@@ -24,7 +24,7 @@ public:
     {}
 
     unsigned timeout() const;
-
+    unsigned command() const;
 }; // Config
 } // perfnp
 #endif // PERFNP_CONFIG_H_

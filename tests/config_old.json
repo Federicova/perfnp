@@ -1,0 +1,15 @@
+{
+    "timeout" : 60,
+
+    "command" : ["golem", "$blockvar", "--no-hinter", "$file"],
+
+    "variables" : {
+
+        "blockvar" : {
+            "values" : ["--with-exact-block-var", "--without-exact-block-var"]
+        },
+        "file" : {
+            "values" : ["800024.json", "800142.json"]
+        }
+    }
+}
