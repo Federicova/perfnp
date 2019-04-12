@@ -48,12 +48,12 @@ cout<<"Number of available files: " << jf.size() << endl;
 cout << "set blockvar: " << b<< "\n";
 cout<<"Number of blockvar options: " << jb.size() << endl;
 
-/*SECTION("command")
+SECTION("command")
 {
     Config c(j);
     //REQUIRE(c.timeout() == 60);
     REQUIRE_THROWS_AS(c.command(), std::runtime_error);
-}*/
+}
 SECTION("timeout")
 {
     Config c(j);
